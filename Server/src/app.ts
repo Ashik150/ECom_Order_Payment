@@ -2,7 +2,9 @@ import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import pinoHttp from 'pino-http'
+import swaggerUi from 'swagger-ui-express'
 import { getEnv } from './config/env'
+import { openApiDocument } from './docs/openapi'
 import { errorHandler, notFoundHandler } from './middleware/error-handler'
 import { requestContext } from './middleware/request-context'
 import { logger } from './infrastructure/logger'
@@ -38,6 +40,8 @@ export function createApp() {
   app.get('/api/health', (_req, res) => {
     sendSuccess(res, { status: 'ok', timestamp: new Date().toISOString() })
   })
+  app.get('/api/docs.json', (_req, res) => res.json(openApiDocument))
+  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument))
   app.use('/api/auth', authRouter)
   app.use('/api/categories', categoryRouter)
   app.use('/api/products', productRouter)
