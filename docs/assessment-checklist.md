@@ -59,8 +59,8 @@ No item is marked complete until its implementation and listed verification exis
 | [ ] | Use meaningful OOP classes for User, Product, Order, and Payment logic | Service/domain classes encapsulate registration, validation, totals, payment, and stock rules; controllers remain thin | `Server/src/modules/**/**.service.ts` | All domain routes | Service unit tests |
 | [ ] | Use the Strategy Pattern for payment providers | `PaymentStrategy` interface, Stripe/bKash implementations, and factory | `Server/src/modules/payments/strategies/` | Checkout and provider routes | Factory and strategy unit tests |
 | [ ] | Future providers do not require core order changes | Provider registration isolated in the strategy factory | Payment strategy factory | Checkout | Factory extension test |
-| [ ] | Use relational tables for Users, Categories, Products, Orders, OrderItems, Payments | PostgreSQL Prisma schema with explicit relations and referential actions | Prisma schema and migration | Persistence layer | Migration verification |
-| [ ] | Add efficient indexes and constraints | Index email, SKU, product status/category, category parent, order user/status, item order, payment order/provider/status/transaction | Prisma schema and SQL migration | Query layer | Schema inspection |
+| [x] | Use relational tables for Users, Categories, Products, Orders, OrderItems, Payments | PostgreSQL Prisma schema with explicit relations and referential actions | Prisma schema and migration | Persistence layer | Prisma generation and schema validation |
+| [x] | Add efficient indexes and constraints | Index email, SKU, product status/category, category parent, order user/status, item order, payment order/provider/status/transaction | Prisma schema and SQL migration | Query layer | Prisma validation and SQL inspection |
 | [ ] | Model a hierarchical category tree | Self-referencing Category parent/children relation with unique slug and indexed parent ID | Prisma schema and category module | Category APIs; `/admin/categories` | Category API tests |
 | [ ] | Prevent category cycles | Ancestor walk with visited-set validation before parent changes | Category service | Category mutation routes | Cycle tests |
 | [ ] | Retrieve and manage category trees | Admin CRUD and public flat/tree reads | Category module | `/api/categories`, `/api/categories/tree`, `/api/categories/:id` | Category API tests |
@@ -69,7 +69,7 @@ No item is marked complete until its implementation and listed verification exis
 | [ ] | Cache category tree | Redis cache-aside using `categories:tree:v1`, JSON, configurable TTL | `Server/src/infrastructure/cache/`, category service | Category tree/recommendations | Cache hit/miss tests |
 | [ ] | Invalidate category cache after mutations | Delete category tree key after create/update/delete | Category service | Category admin routes | Invalidation tests |
 | [ ] | Redis failure falls back safely | Testable cache contract catches/logs Redis failures and returns database result | Cache adapter and category service | Tree/recommendations | Cache failure tests |
-| [ ] | Use migrations rather than schema synchronization | Checked-in Prisma migration SQL and documented migrate commands | `Server/prisma/migrations/` | Local setup | Migration verification |
+| [x] | Use migrations rather than schema synchronization | Checked-in Prisma migration SQL and documented migrate commands | `Server/prisma/migrations/` | Local setup | Prisma schema validation; database execution remains pending until PostgreSQL is available |
 | [ ] | Seed representative data | Admin/user, nested categories, active/inactive products across levels | `Server/prisma/seed.ts` | Seed command | Seed verification |
 
 ## API, Validation, Security, and Operations
@@ -133,6 +133,7 @@ No item is marked complete until its implementation and listed verification exis
 |---|---|---|
 | Initial repository audit | `git status`, `git branch --show-current`, `git log --oneline -10`, source/manifests review | Complete: clean `main`, one initial commit, stock React client, Express-only server |
 | PDF review | Extracted and read all 5 pages with page boundaries | Complete |
+| Database foundation | `prisma generate`, `prisma validate`, `npm run typecheck`, `npm run lint`, `npm audit --omit=dev` | Complete; all passed, audit reported 0 vulnerabilities |
 | Final backend verification | Install, lint, typecheck, tests, build, migration, seed, Swagger smoke test | Pending |
 | Final frontend verification | Install, lint, typecheck, tests, build, responsive browser checks | Pending |
 | Final compliance audit | Re-read PDF and map evidence for every row | Pending |
