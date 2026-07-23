@@ -9,7 +9,13 @@ import { logger } from './infrastructure/logger'
 import { authRouter } from './modules/auth/auth.routes'
 import { categoryRouter } from './modules/categories/category.routes'
 import { orderRouter } from './modules/orders/order.routes'
+import { paymentRouter } from './modules/payments/payment.routes'
+import {
+  bkashWebhookHandler,
+  stripeWebhookHandler,
+} from './modules/payments/webhook.handlers'
 import { productRouter } from './modules/products/product.routes'
+import { userRouter } from './modules/users/user.routes'
 import { sendSuccess } from './utils/http'
 
 export function createApp() {
@@ -21,6 +27,11 @@ export function createApp() {
   app.use(pinoHttp({ logger }))
   app.use(helmet())
   app.use(cors({ origin: env.FRONTEND_URL, credentials: true }))
+  app.post(
+    '/api/webhooks/stripe',
+    express.raw({ type: 'application/json', limit: '256kb' }),
+    stripeWebhookHandler,
+  )
   app.use(express.json({ limit: '256kb' }))
   app.use(express.urlencoded({ extended: false, limit: '64kb' }))
 
@@ -31,6 +42,9 @@ export function createApp() {
   app.use('/api/categories', categoryRouter)
   app.use('/api/products', productRouter)
   app.use('/api/orders', orderRouter)
+  app.use('/api/payments', paymentRouter)
+  app.use('/api/users', userRouter)
+  app.post('/api/webhooks/bkash', bkashWebhookHandler)
 
   app.use(notFoundHandler)
   app.use(errorHandler)

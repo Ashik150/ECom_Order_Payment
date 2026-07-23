@@ -3,6 +3,7 @@ import { prisma } from '../../infrastructure/prisma'
 import { authenticate } from '../../middleware/auth'
 import { validate } from '../../middleware/validate'
 import { sendSuccess } from '../../utils/http'
+import { checkoutHandler } from '../payments/payment.routes'
 import { createOrderSchema, orderIdParamsSchema, orderListQuerySchema } from './order.schemas'
 import { OrderService } from './order.service'
 
@@ -20,6 +21,7 @@ orderRouter.get('/', validate({ query: orderListQuerySchema }), async (req, res)
   )
   sendSuccess(res, result.items, 200, result.pagination)
 })
+orderRouter.post('/:orderId/checkout', ...checkoutHandler)
 orderRouter.get('/:id', validate({ params: orderIdParamsSchema }), async (req, res) => {
   sendSuccess(res, await service.getById(req.params.id as string, req.auth!))
 })
