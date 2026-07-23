@@ -16,6 +16,12 @@
     "noImplicitOverride": true,
     "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "prisma/**/*.ts", "jest.config.ts"],
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "prisma/**/*.ts",
+    "jest.config.ts",
+    "prisma.config.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

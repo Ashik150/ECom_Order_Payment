@@ -175,10 +175,9 @@ PostgreSQL fallback.
 ## Testing
 
 Verified commands and current counts are recorded in the assessment checklist.
-External APIs are mocked. PostgreSQL migration/seed execution needs a running
-local PostgreSQL service; this workspace did not have `psql` or `redis-server`
-installed, so schema generation/validation and Redis fallback tests were used
-instead of claiming those local-service commands passed.
+External APIs are mocked. The checked-in migration and seed were successfully
+verified against local PostgreSQL 17. Redis fallback behavior is covered by
+tests, so category retrieval remains available when Redis is offline.
 
 ## Assumptions and Limitations
 

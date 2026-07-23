@@ -69,8 +69,8 @@ No item is marked complete until its implementation and listed verification exis
 | [x] | Cache category tree | Redis cache-aside using `categories:tree:v1`, JSON, configurable TTL | `Server/src/infrastructure/cache/`, category service | Category tree/recommendations | Cache hit/miss tests |
 | [x] | Invalidate category cache after mutations | Delete category tree key after create/update/delete | Category service | Category admin routes | Invalidation tests |
 | [x] | Redis failure falls back safely | Testable cache contract catches/logs Redis failures and returns database result | Cache adapter and category service | Tree/recommendations | Cache failure tests |
-| [x] | Use migrations rather than schema synchronization | Checked-in Prisma migration SQL and documented migrate commands | `Server/prisma/migrations/` | Local setup | Prisma schema validation; database execution remains pending until PostgreSQL is available |
-| [x] | Seed representative data | Admin/user, nested categories, active/inactive products across levels | `Server/prisma/seed.ts` | Seed command | Seed verification |
+| [x] | Use migrations rather than schema synchronization | Checked-in Prisma migration SQL and documented migrate commands | `Server/prisma/migrations/` | Local setup | Migration `20260723170000_initial` applied successfully to local PostgreSQL 17 |
+| [x] | Seed representative data | Admin/user, nested categories, active/inactive products across levels | `Server/prisma/seed.ts` | Seed command | `npm run prisma:seed` executed successfully |
 
 ## API, Validation, Security, and Operations
 
@@ -134,6 +134,6 @@ No item is marked complete until its implementation and listed verification exis
 | Initial repository audit | `git status`, `git branch --show-current`, `git log --oneline -10`, source/manifests review | Complete: clean `main`, one initial commit, stock React client, Express-only server |
 | PDF review | Extracted and read all 5 pages with page boundaries | Complete |
 | Database foundation | `prisma generate`, `prisma validate`, `npm run typecheck`, `npm run lint`, `npm audit --omit=dev` | Complete; all passed, audit reported 0 vulnerabilities |
-| Final backend verification | Install, lint, typecheck, 31 tests, build, Prisma validation, Swagger smoke test | Passed; migration/seed execution unavailable because local PostgreSQL is not installed |
+| Final backend verification | Install, lint, typecheck, 31 tests, build, Prisma validation, migration, seed, Swagger smoke test | Passed; migration and seed verified against local PostgreSQL 17 on port 5434 |
 | Final frontend verification | Install, audit, lint, typecheck, responsive CSS audit, production build | Passed; no browser automation runtime was available |
 | Final compliance audit | Re-read all 5 PDF pages and map evidence for every row | Complete |
