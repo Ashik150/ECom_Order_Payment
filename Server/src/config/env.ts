@@ -10,6 +10,11 @@ const booleanString = z
   .default('false')
   .transform((value) => value === 'true')
 
+const optionalBooleanString = z
+  .enum(['true', 'false'])
+  .transform((value) => value === 'true')
+  .optional()
+
 const envSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -31,14 +36,25 @@ const envSchema = z
     BKASH_PASSWORD: z.string().min(1),
     BKASH_CALLBACK_URL: z.string().url(),
     PAYMENT_MOCK_MODE: booleanString,
+    STRIPE_MOCK_MODE: optionalBooleanString,
+    BKASH_MOCK_MODE: optionalBooleanString,
   })
   .superRefine((value, context) => {
-    if (value.NODE_ENV === 'production' && value.PAYMENT_MOCK_MODE) {
-      context.addIssue({
-        code: 'custom',
-        path: ['PAYMENT_MOCK_MODE'],
-        message: 'Payment mock mode cannot be enabled in production',
-      })
+    if (value.NODE_ENV === 'production') {
+      const enabledMockModes = [
+        ['PAYMENT_MOCK_MODE', value.PAYMENT_MOCK_MODE],
+        ['STRIPE_MOCK_MODE', value.STRIPE_MOCK_MODE],
+        ['BKASH_MOCK_MODE', value.BKASH_MOCK_MODE],
+      ] as const
+      for (const [field, enabled] of enabledMockModes) {
+        if (enabled) {
+          context.addIssue({
+            code: 'custom',
+            path: [field],
+            message: 'Payment mock mode cannot be enabled in production',
+          })
+        }
+      }
     }
   })
 

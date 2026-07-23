@@ -12,7 +12,7 @@ export const paymentStrategies = new PaymentStrategyFactory([
   new StripePaymentStrategy({
     secretKey: env.STRIPE_SECRET_KEY,
     webhookSecret: env.STRIPE_WEBHOOK_SECRET,
-    mockMode: env.PAYMENT_MOCK_MODE,
+    mockMode: env.STRIPE_MOCK_MODE ?? env.PAYMENT_MOCK_MODE,
   }),
   new BkashPaymentStrategy({
     baseUrl: env.BKASH_BASE_URL,
@@ -21,7 +21,7 @@ export const paymentStrategies = new PaymentStrategyFactory([
     username: env.BKASH_USERNAME,
     password: env.BKASH_PASSWORD,
     callbackUrl: env.BKASH_CALLBACK_URL,
-    mockMode: env.PAYMENT_MOCK_MODE,
+    mockMode: env.BKASH_MOCK_MODE ?? env.PAYMENT_MOCK_MODE,
   }),
 ])
 

@@ -86,9 +86,11 @@ The root `.env.example` documents PostgreSQL, Redis, JWT, origins, ports,
 logging, Stripe, bKash, callback URLs, cache TTL, frontend keys, and mock mode.
 Never commit `.env`.
 
-`PAYMENT_MOCK_MODE=true` is intended only for local demonstrations/tests. The
-environment validator rejects it in production. Set it to `false` and configure
-real test/sandbox credentials to exercise provider APIs. Stripe webhook payloads
+`PAYMENT_MOCK_MODE=true` is intended only for local demonstrations/tests.
+`STRIPE_MOCK_MODE` and `BKASH_MOCK_MODE` can override it per provider, which is
+useful when only one sandbox is configured. The environment validator rejects
+all mock modes in production. Set a provider's mode to `false` and configure its
+test/sandbox credentials to exercise that provider API. Stripe webhook payloads
 still require an official signature. bKash provider URL and credentials can be
 switched from sandbox to live without code changes.
 
