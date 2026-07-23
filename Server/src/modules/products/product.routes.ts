@@ -27,6 +27,26 @@ const service = new ProductService(prisma)
 const recommendations = new RecommendationService(prisma, categoryService)
 export const productRouter = Router()
 
+productRouter.get(
+  '/admin/list',
+  authenticate,
+  requireRole(Role.ADMIN),
+  validate({ query: productListQuerySchema }),
+  async (req, res) => {
+    const result = await service.list({
+      ...(req.query as unknown as Parameters<ProductService['list']>[0]),
+      isAdmin: true,
+    })
+    sendSuccess(res, result.items, 200, result.pagination)
+  },
+)
+productRouter.get(
+  '/admin/:id',
+  authenticate,
+  requireRole(Role.ADMIN),
+  validate({ params: productIdParamsSchema }),
+  async (req, res) => sendSuccess(res, await service.getById(req.params.id as string, true)),
+)
 productRouter.get('/', validate({ query: productListQuerySchema }), async (req, res) => {
   const result = await service.list(
     req.query as unknown as Parameters<ProductService['list']>[0],
