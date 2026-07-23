@@ -41,7 +41,7 @@ type MockFunction = jest.Mock<Promise<unknown>, unknown[]>
 type MockDatabase = {
   user: { findUnique: MockFunction; create: MockFunction }
   category: { findUnique: MockFunction }
-  product: { findMany: MockFunction; create: MockFunction }
+  product: { findMany: MockFunction; create: MockFunction; count: MockFunction }
   order: { findFirst: MockFunction; findUnique: MockFunction }
   payment: { create: MockFunction; findUnique: MockFunction }
   $transaction: MockFunction
@@ -168,6 +168,23 @@ describe('REST API', () => {
         categoryId,
       })
       .expect(201)
+  })
+
+  it('applies pagination defaults when only the page query is provided', async () => {
+    database.product.findMany.mockResolvedValue([])
+    database.product.count.mockResolvedValue(0)
+
+    const response = await request(app).get('/api/products?page=1').expect(200)
+
+    expect(database.product.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ skip: 0, take: 20 }),
+    )
+    expect(response.body.meta).toMatchObject({
+      page: 1,
+      limit: 20,
+      total: 0,
+      pages: 0,
+    })
   })
 
   it('rejects invalid quantities before order persistence', async () => {

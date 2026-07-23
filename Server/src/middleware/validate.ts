@@ -7,7 +7,15 @@ export function validate(
   return (req, _res, next) => {
     if (schemas.body) req.body = schemas.body.parse(req.body)
     if (schemas.params) Object.assign(req.params, schemas.params.parse(req.params))
-    if (schemas.query) Object.assign(req.query, schemas.query.parse(req.query))
+    if (schemas.query) {
+      const query = schemas.query.parse(req.query)
+      Object.defineProperty(req, 'query', {
+        value: query,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      })
+    }
     next()
   }
 }
