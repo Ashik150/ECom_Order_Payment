@@ -18,6 +18,8 @@ import { EmptyState, ErrorState, LoadingState, StatusBadge } from '../../compone
 import { useCart } from '../../store/CartContext'
 import type { ApiResponse, Order, Payment } from '../../types/api'
 
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+
 export function CartPage() {
   const cart = useCart()
   const total = cart.items.reduce(
@@ -81,11 +83,15 @@ export function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const stripePromise = useMemo(
-    () => loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? 'pk_test_placeholder'),
+    () => (stripePublishableKey ? loadStripe(stripePublishableKey) : null),
     [],
   )
 
   const begin = async () => {
+    if (provider === 'stripe' && !stripePublishableKey) {
+      setError('Stripe publishable key is not configured')
+      return
+    }
     setLoading(true)
     setError('')
     try {
