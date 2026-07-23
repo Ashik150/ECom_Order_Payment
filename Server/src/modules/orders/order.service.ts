@@ -29,35 +29,25 @@ export class OrderService {
 
   async create(userId: string, input: { items: { productId: string; quantity: number }[] }) {
     const productIds = input.items.map((item) => item.productId)
-    const products = await this.database.product.findMany({ where: { id: { in: productIds } } })
-    if (products.length !== productIds.length) {
-      throw new AppError(404, 'PRODUCT_NOT_FOUND', 'One or more products were not found')
-    }
-
-    const productsById = new Map(products.map((product) => [product.id, product]))
-    const pricedItems = input.items.map((item) => {
-      const product = productsById.get(item.productId)!
-      if (product.status !== ProductStatus.ACTIVE) {
-        throw new AppError(409, 'PRODUCT_UNAVAILABLE', `${product.name} is not available`)
-      }
-      if (product.stock < item.quantity) {
-        throw new AppError(409, 'INSUFFICIENT_STOCK', `Insufficient stock for ${product.name}`)
-      }
-      return { ...item, unitPrice: product.price.toString() }
-    })
-    const calculation = this.calculator.calculate(pricedItems)
-
     return this.database.$transaction(async (transaction) => {
-      const currentProducts = await transaction.product.findMany({
-        where: { id: { in: productIds }, status: ProductStatus.ACTIVE },
+      const products = await transaction.product.findMany({
+        where: { id: { in: productIds } },
       })
-      const currentById = new Map(currentProducts.map((product) => [product.id, product]))
-      for (const item of input.items) {
-        const product = currentById.get(item.productId)
-        if (!product || product.stock < item.quantity) {
-          throw new AppError(409, 'STOCK_CHANGED', 'Product availability changed; review your cart')
-        }
+      if (products.length !== productIds.length) {
+        throw new AppError(404, 'PRODUCT_NOT_FOUND', 'One or more products were not found')
       }
+      const productsById = new Map(products.map((product) => [product.id, product]))
+      const pricedItems = input.items.map((item) => {
+        const product = productsById.get(item.productId)!
+        if (product.status !== ProductStatus.ACTIVE) {
+          throw new AppError(409, 'PRODUCT_UNAVAILABLE', `${product.name} is not available`)
+        }
+        if (product.stock < item.quantity) {
+          throw new AppError(409, 'INSUFFICIENT_STOCK', `Insufficient stock for ${product.name}`)
+        }
+        return { ...item, unitPrice: product.price.toString() }
+      })
+      const calculation = this.calculator.calculate(pricedItems)
 
       return transaction.order.create({
         data: {

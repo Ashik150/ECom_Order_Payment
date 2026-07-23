@@ -44,7 +44,7 @@ export function CartPage() {
               <div className="line-item-main">
                 <Link to={`/products/${product.id}`}><h2>{product.name}</h2></Link>
                 <span>{product.sku}</span>
-                <strong>${product.price}</strong>
+                <strong>BDT {product.price}</strong>
               </div>
               <div className="quantity-control">
                 <button className="icon-button" onClick={() => cart.update(product.id, quantity - 1)} aria-label="Decrease quantity"><Minus size={16} /></button>
@@ -58,7 +58,7 @@ export function CartPage() {
         <aside className="summary-panel">
           <h2>Order estimate</h2>
           <div><span>Items</span><span>{cart.count}</span></div>
-          <div><span>Estimated total</span><strong>${total.toFixed(2)}</strong></div>
+          <div><span>Estimated total</span><strong>BDT {total.toFixed(2)}</strong></div>
           <p>The backend recalculates authoritative prices and totals when the order is created.</p>
           <Link className="primary-button full" to="/checkout">Continue to checkout <ChevronRight size={17} /></Link>
         </aside>
@@ -179,9 +179,9 @@ export function CheckoutPage() {
         <aside className="summary-panel">
           <h2>Order summary</h2>
           {cart.items.map((item) => (
-            <div key={item.product.id}><span>{item.product.name} × {item.quantity}</span><span>${(Number(item.product.price) * item.quantity).toFixed(2)}</span></div>
+            <div key={item.product.id}><span>{item.product.name} × {item.quantity}</span><span>BDT {(Number(item.product.price) * item.quantity).toFixed(2)}</span></div>
           ))}
-          {order ? <div className="summary-total"><span>Server total</span><strong>${order.totalAmount}</strong></div> : null}
+          {order ? <div className="summary-total"><span>Server total</span><strong>BDT {order.totalAmount}</strong></div> : null}
         </aside>
       </div>
     </div>
@@ -240,7 +240,7 @@ export function OrdersPage() {
           <Link to={`/orders/${order.id}`} className="data-row" key={order.id}>
             <div><strong>Order {order.id.slice(0, 8)}</strong><span>{new Date(order.createdAt).toLocaleDateString()}</span></div>
             <span>{order.items.length} products</span>
-            <strong>${order.totalAmount}</strong>
+            <strong>BDT {order.totalAmount}</strong>
             <StatusBadge status={order.status} />
             <ChevronRight size={18} />
           </Link>
@@ -266,13 +266,13 @@ export function OrderDetailsPage() {
   return (
     <div className="page-stack">
       <Link to="/orders" className="back-link"><ArrowLeft size={17} /> Back to orders</Link>
-      <header className="page-header"><div><span className="eyebrow">Order {order.id}</span><h1>${order.totalAmount}</h1><p>Created {new Date(order.createdAt).toLocaleString()}</p></div><StatusBadge status={order.status} /></header>
+      <header className="page-header"><div><span className="eyebrow">Order {order.id}</span><h1>BDT {order.totalAmount}</h1><p>Created {new Date(order.createdAt).toLocaleString()}</p></div><StatusBadge status={order.status} /></header>
       <div className="line-items">
         {order.items.map((item) => (
           <article className="line-item" key={item.id}>
             <ProductVisual productKey={item.product.sku} />
-            <div className="line-item-main"><h2>{item.product.name}</h2><span>{item.product.sku}</span><strong>${item.price} × {item.quantity}</strong></div>
-            <strong>${item.subtotal}</strong>
+            <div className="line-item-main"><h2>{item.product.name}</h2><span>{item.product.sku}</span><strong>BDT {item.price} × {item.quantity}</strong></div>
+            <strong>BDT {item.subtotal}</strong>
           </article>
         ))}
       </div>
@@ -301,7 +301,7 @@ export function PaymentsPage() {
           <div className="data-row" key={payment.id}>
             <div><strong>{payment.provider}</strong><span>{payment.transactionId ?? 'Awaiting provider ID'}</span></div>
             <span>{new Date(payment.createdAt).toLocaleDateString()}</span>
-            <strong>{payment.order ? `$${payment.order.totalAmount}` : ''}</strong>
+            <strong>{payment.order ? `BDT ${payment.order.totalAmount}` : ''}</strong>
             <StatusBadge status={payment.status} />
           </div>
         ))}

@@ -145,7 +145,7 @@ export function ProductDetailsPage() {
           <span className="sku">{product.sku}</span>
           <p>{product.description}</p>
           <div className="detail-purchase">
-            <strong>${product.price}</strong>
+            <strong>BDT {product.price}</strong>
             <button
               className="primary-button"
               disabled={!product.stock}
@@ -187,7 +187,7 @@ function ProductCard({ product }: { product: Product }) {
         <Link to={`/products/${product.id}`}><h2>{product.name}</h2></Link>
         <p>{product.description}</p>
         <div className="product-card-footer">
-          <strong>${product.price}</strong>
+          <strong>BDT {product.price}</strong>
           <button
             className="icon-button"
             onClick={() => cart.add(product)}

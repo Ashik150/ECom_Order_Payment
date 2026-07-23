@@ -30,7 +30,7 @@ export class PaymentService {
     const initiated = await strategy.initiatePayment({
       orderId: order.id,
       amount: order.totalAmount.toFixed(2),
-      currency: provider === PaymentProvider.BKASH ? 'BDT' : 'USD',
+      currency: 'BDT',
     })
     const payment = await this.database.payment.create({
       data: {

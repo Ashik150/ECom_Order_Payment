@@ -56,7 +56,7 @@ export function AdminProductsPage() {
         {products.map((product) => (
           <div className="admin-table-row" key={product.id}>
             <div><strong>{product.name}</strong><span>{product.sku}</span></div>
-            <span>${product.price}</span><span>{product.stock}</span><StatusBadge status={product.status} />
+            <span>BDT {product.price}</span><span>{product.stock}</span><StatusBadge status={product.status} />
             <div className="row-actions">
               <Link className="icon-button" to={`/admin/products/${product.id}/edit`} aria-label={`Edit ${product.name}`}><Edit3 size={17} /></Link>
               <button className="icon-button danger" onClick={() => remove(product)} aria-label={`Delete ${product.name}`}><Trash2 size={17} /></button>

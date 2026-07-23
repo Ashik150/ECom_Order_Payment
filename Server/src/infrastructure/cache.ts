@@ -13,7 +13,10 @@ export class RedisCacheStore implements CacheStore {
   private connecting?: Promise<unknown>
 
   constructor(url: string) {
-    this.client = createClient({ url })
+    this.client = createClient({
+      url,
+      socket: { connectTimeout: 1000, reconnectStrategy: false },
+    })
     this.client.on('error', (error) => logger.warn({ error }, 'Redis connection error'))
   }
 
