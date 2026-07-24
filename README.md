@@ -210,10 +210,12 @@ tests, so category retrieval remains available when Redis is offline.
 
 The detailed, evidence-linked matrix is maintained in
 [docs/assessment-checklist.md](docs/assessment-checklist.md). Implemented areas
-include every non-deployment PDF feature: users, products, categories, orders,
-payments, Stripe/bKash structures, OOP, Strategy, deterministic totals,
-transactional stock, DFS, Redis, migrations, seeds, tests, Swagger, diagrams,
-and environment guidance.
+include users, products, categories, orders, payments, Stripe/bKash structures,
+OOP, Strategy, deterministic totals, transactional stock, DFS, Redis,
+migrations, seeds, tests, Swagger, diagrams, environment guidance, and the
+requested deployment demonstration.
 
-Deployment was not implemented because it was excluded by the user. This
-includes Vercel, ngrok, Docker, and cloud/server deployment work.
+The frontend is deployed on Vercel, ngrok exposes the local API on port `4000`,
+and Docker Compose runs the backend, PostgreSQL, and Redis. The local machine,
+Docker Desktop, and ngrok must remain running for the public frontend to reach
+the assessment's locally hosted backend.

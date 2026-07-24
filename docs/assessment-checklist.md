@@ -6,7 +6,6 @@ Status legend:
 
 - `[ ]` Planned
 - `[x]` Complete and verified
-- `[-]` Excluded at the user's explicit request
 
 No item is marked complete until its implementation and listed verification exist.
 
@@ -118,14 +117,14 @@ No item is marked complete until its implementation and listed verification exis
 | [x] | Complete environment configuration guide | Placeholder-only `.env.example` and local setup instructions | `.env.example`, README | Local startup | Environment audit |
 | [x] | Root README covers all requested operational and compliance topics | Developer-ready overview, setup, payments, algorithms, security, limitations, matrix | `README.md` | Documentation | Final audit |
 
-## Deployment Exclusions
+## Deployment Verification
 
-| Status | Requirement | Decision | Notes |
+| Status | Requirement | Implementation | Notes |
 |---|---|---|---|
-| [x] | Local environment configuration guide | Included | This is documentation, not deployment, and remains required. |
-| [-] | Frontend deployment on Vercel | Excluded at the user's explicit request | No Vercel configuration or deployment will be created. |
-| [-] | Backend exposure through ngrok | Excluded at the user's explicit request | Backend will run locally only. |
-| [-] | Docker deployment for backend and database | Excluded at the user's explicit request | No Dockerfile or Compose deployment will be created. |
+| [x] | Local environment configuration guide | Root `.env.example`, README setup, and Docker commands | Secrets remain outside source control. |
+| [x] | Frontend deployment on Vercel | Vite production build deployed at `https://e-com-order-payment.vercel.app` | SPA routing and frontend environment configuration included. |
+| [x] | Backend exposure through ngrok | ngrok forwards public HTTPS traffic to local port `4000` | Vercel-origin CORS and the public products endpoint were verified. |
+| [x] | Docker deployment for backend and database | `Server/Dockerfile` and root `compose.yaml` run Express, PostgreSQL, and Redis | Health checks, named volumes, migrations, seed, OpenSSL, and npm retry handling verified. |
 
 ## Verification Record
 
@@ -134,6 +133,7 @@ No item is marked complete until its implementation and listed verification exis
 | Initial repository audit | `git status`, `git branch --show-current`, `git log --oneline -10`, source/manifests review | Complete: clean `main`, one initial commit, stock React client, Express-only server |
 | PDF review | Extracted and read all 5 pages with page boundaries | Complete |
 | Database foundation | `prisma generate`, `prisma validate`, `npm run typecheck`, `npm run lint`, `npm audit --omit=dev` | Complete; all passed, audit reported 0 vulnerabilities |
-| Final backend verification | Install, lint, typecheck, 31 tests, build, Prisma validation, migration, seed, Swagger smoke test | Passed; migration and seed verified against local PostgreSQL 17 on port 5434 |
+| Final backend verification | Install, lint, typecheck, 32 tests, build, Prisma validation, migration, seed, Swagger smoke test | Passed; migration and seed verified against PostgreSQL 17 |
 | Final frontend verification | Install, audit, lint, typecheck, responsive CSS audit, production build | Passed; no browser automation runtime was available |
 | Final compliance audit | Re-read all 5 PDF pages and map evidence for every row | Complete |
+| Deployment verification | Docker image build, Compose health checks, Redis `PONG` and cache key, local/public API smoke tests, Vercel-origin CORS | Passed; backend, PostgreSQL, and Redis healthy, ngrok products endpoint returned HTTP 200 |
