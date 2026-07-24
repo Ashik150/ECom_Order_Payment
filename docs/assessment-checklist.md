@@ -114,7 +114,7 @@ No item is marked complete until its implementation and listed verification exis
 | [x] | Stripe and bKash payment flow diagrams | Separate Mermaid sequence diagrams through verification and stock finalization | `docs/payment-flow.md` | Documentation | Documentation audit |
 | [x] | API documentation | Swagger plus written API/local usage guide | `Server/src/docs/`, `docs/api-guide.md` | `/api/docs` | OpenAPI test |
 | [x] | Testing documentation | Local database/cache/test commands and test architecture | `docs/testing-guide.md` | Documentation | Documentation audit |
-| [x] | Complete environment configuration guide | Placeholder-only `.env.example` and local setup instructions | `.env.example`, README | Local startup | Environment audit |
+| [x] | Complete environment configuration guide | Placeholder-only `.env.example`, variable reference, local/Docker/Vercel profiles, and ngrok instructions | `.env.example`, `docs/environment-configuration.md`, `docs/ngrok-local-setup.md`, README | Local startup and deployment demonstration | Environment audit |
 | [x] | Root README covers all requested operational and compliance topics | Developer-ready overview, setup, payments, algorithms, security, limitations, matrix | `README.md` | Documentation | Final audit |
 
 ## Deployment Verification

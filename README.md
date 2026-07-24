@@ -41,8 +41,10 @@ docs/                   checklist and Mermaid documentation
 ```
 
 See [architecture](docs/architecture.md), [ERD](docs/erd.md),
-[payment flows](docs/payment-flow.md), [API guide](docs/api-guide.md), and
-[testing guide](docs/testing-guide.md).
+[payment flows](docs/payment-flow.md), [API guide](docs/api-guide.md),
+[testing guide](docs/testing-guide.md),
+[environment configuration](docs/environment-configuration.md), and the
+[local ngrok setup](docs/ngrok-local-setup.md).
 
 ## Prerequisites
 
