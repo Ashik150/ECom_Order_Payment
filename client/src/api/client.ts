@@ -1,9 +1,15 @@
 import axios from 'axios'
 
+const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api'
+const usesNgrokFreeDomain = /\.ngrok-free\.(app|dev)(?:\/|$)/.test(baseURL)
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api',
+  baseURL,
   timeout: 15_000,
-  headers: { 'content-type': 'application/json' },
+  headers: {
+    'content-type': 'application/json',
+    ...(usesNgrokFreeDomain ? { 'ngrok-skip-browser-warning': '1' } : {}),
+  },
 })
 
 api.interceptors.request.use((config) => {
