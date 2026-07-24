@@ -80,6 +80,23 @@ Swagger: `http://localhost:4000/api/docs`
 For iterative schema development use `npm run prisma:migrate`. For checked-in
 migrations use `npm run prisma:deploy`.
 
+## Docker
+
+Docker Compose runs the API, PostgreSQL, and Redis with persistent local volumes.
+It reads provider and authentication settings from the ignored root `.env`,
+while overriding database and Redis hosts with Compose service names.
+
+```bash
+docker compose up -d --build
+docker compose run --rm backend npm run prisma:seed
+docker compose ps
+```
+
+The API remains available at `http://localhost:4000/api`. Follow logs with
+`docker compose logs -f backend` and stop the stack with `docker compose down`.
+Do not use `docker compose down -v` unless the database and Redis data should be
+deleted.
+
 ## Environment
 
 The root `.env.example` documents PostgreSQL, Redis, JWT, origins, ports,
